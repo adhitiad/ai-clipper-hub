@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+pymongo
+redis
+sentence-transformers
+pinecone-client
+langchain
+langchain-groq
+apscheduler
+google-api-python-client
+requests
+python-dotenv
