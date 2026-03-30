@@ -3,7 +3,7 @@ uvicorn
 pymongo
 redis
 sentence-transformers
-pinecone-client
+pinecone
 langchain
 langchain-groq
 apscheduler
