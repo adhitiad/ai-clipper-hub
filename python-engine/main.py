@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from apscheduler.schedulers.background import BackgroundScheduler
 import uvicorn
+from contextlib import asynccontextmanager
 
 from database import db, redis_client
 from tasks import process_new_comments_to_pinecone
@@ -9,11 +10,6 @@ from engagement import reply_to_new_comments
 from agents.supervisor import run_autonomous_workflow
 from agents.evaluator import evaluate_and_evolve_persona
 from logger import logger
-
-app = FastAPI(title="AI Clipper Content Factory")
-app.add_middleware(
-    CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
-)
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(process_new_comments_to_pinecone, "interval", minutes=30)
@@ -51,14 +47,22 @@ scheduler.add_job(
 )
 
 
-@app.on_event("startup")
-def startup_event():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     logger.info("Server AI Clipper & Supervisor Agent menyala...")
     # --- TAMBAHKAN KODE INI UNTUK TESTING LANGSUNG ---
 
     # --------------------------------------------------
 
     scheduler.start()
+    yield
+    scheduler.shutdown()
+
+
+app = FastAPI(title="AI Clipper Content Factory", lifespan=lifespan)
+app.add_middleware(
+    CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
+)
 
 
 @app.get("/api/dashboard")
