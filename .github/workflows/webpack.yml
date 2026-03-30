@@ -21,8 +21,11 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: ts-frontend/package-lock.json
 
     - name: Build
+      working-directory: ts-frontend
       run: |
         npm install
-        npx webpack
+        npm run build
