@@ -10,3 +10,8 @@ apscheduler
 google-api-python-client
 requests
 python-dotenv
+langgraph
+cloudinary
+python-multipart
+pydantic
+groq
