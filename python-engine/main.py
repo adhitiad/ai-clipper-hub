@@ -54,10 +54,6 @@ scheduler.add_job(
 @app.on_event("startup")
 def startup_event():
     logger.info("Server AI Clipper & Supervisor Agent menyala...")
-    # --- TAMBAHKAN KODE INI UNTUK TESTING LANGSUNG ---
-
-    # --------------------------------------------------
-
     scheduler.start()
 
 
